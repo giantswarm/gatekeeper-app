@@ -41,7 +41,7 @@ spec:
             fieldRef:
               fieldPath: metadata.name
         - name: SECRET_NAME
-          value: {{ include "gatekeeper-app.fullname" . }}-webhook-server-secret
+          value: gatekeeper-webhook-server-cert
         image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: manager
@@ -60,7 +60,7 @@ spec:
       - name: cert
         secret:
           defaultMode: 420
-          secretName: {{ include "gatekeeper-app.fullname" . }}-webhook-server-secret
+          secretName: gatekeeper-webhook-server-cert
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
