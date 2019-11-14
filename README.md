@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/giantswarm/gatekeeper-app.svg?style=shield)](https://circleci.com/gh/giantswarm/{APP-NAME}-app)
+[![CircleCI](https://circleci.com/gh/giantswarm/gatekeeper-app.svg?style=shield)](https://circleci.com/gh/giantswarm/gatekeeper-app)
 
 # gatekeeper-app chart
 
