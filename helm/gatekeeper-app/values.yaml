@@ -1,0 +1,29 @@
+# Default values for gatekeeper-app.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+crds: 
+  enabled: true
+
+image:
+  repository: quay.io/open-policy-agent/gatekeeper
+  tag: v3.0.4-beta.2
+  pullPolicy: IfNotPresent
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+resources:
+  limits:
+    cpu: 100m
+    memory: 512Mi
+  requests:
+    cpu: 100m
+    memory: 256Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
