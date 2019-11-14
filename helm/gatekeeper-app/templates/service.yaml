@@ -3,7 +3,7 @@ kind: Service
 metadata:
   labels:
 {{ include "gatekeeper-app.labels" . | indent 4 }}
-  name: {{ include "gatekeeper-app.fullname" . }}-controller-manager-service
+  name: gatekeeper-controller-manager-service
   namespace: {{ .Release.Namespace }}
 spec:
   ports:

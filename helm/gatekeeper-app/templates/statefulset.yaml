@@ -4,7 +4,7 @@ metadata:
   labels:
     control-plane: controller-manager
     controller-tools.k8s.io: "1.0"
-  name: {{ include "gatekeeper-app.fullname" . }}-controller-manager
+  name: gatekeeper-controller-manager
   namespace: {{ .Release.Namespace }}
 spec:
   selector:
@@ -12,7 +12,7 @@ spec:
       app.kubernetes.io/name: {{ include "gatekeeper-app.name" . }}
       app.kubernetes.io/instance: {{ .Release.Name }}
   template:
-  serviceName: {{ include "gatekeeper-app.fullname" . }}-controller-manager-service
+  serviceName: gatekeeper-controller-manager-service
   template:
     metadata:
       labels:
