@@ -60,7 +60,7 @@ spec:
       - name: cert
         secret:
           defaultMode: 420
-          secretName: gatekeeper-webhook-server-cert
+          secretName: gatekeeper-webhook-server-secret
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
