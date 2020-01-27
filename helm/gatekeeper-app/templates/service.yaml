@@ -2,13 +2,20 @@ apiVersion: v1
 kind: Service
 metadata:
   labels:
+    app: '{{ template "gatekeeper-app.name" . }}'
+    chart: '{{ template "gatekeeper-app.name" . }}'
+    heritage: '{{ .Release.Service }}'
+    release: '{{ .Release.Name }}'
 {{ include "gatekeeper-app.labels" . | indent 4 }}
-  name: gatekeeper-controller-manager-service
+  name: gatekeeper-webhook-service
   namespace: {{ .Release.Namespace }}
 spec:
   ports:
   - port: 443
     targetPort: 8443
   selector:
-    app.kubernetes.io/name: {{ include "gatekeeper-app.name" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
+    app: '{{ template "gatekeeper-app.name" . }}'
+    chart: '{{ template "gatekeeper-app.name" . }}'
+    control-plane: controller-manager
+    heritage: '{{ .Release.Service }}'
+    release: '{{ .Release.Name }}'

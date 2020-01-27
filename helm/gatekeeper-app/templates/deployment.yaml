@@ -1,0 +1,92 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: '{{ template "gatekeeper-app.name" . }}'
+    chart: '{{ template "gatekeeper-app.name" . }}'
+    control-plane: controller-manager
+    heritage: '{{ .Release.Service }}'
+    release: '{{ .Release.Name }}'
+  name: gatekeeper-controller-manager
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: {{ .Values.replicas }}
+  selector:
+    matchLabels:
+      app: '{{ template "gatekeeper-app.name" . }}'
+      chart: '{{ template "gatekeeper-app.name" . }}'
+      control-plane: controller-manager
+      heritage: '{{ .Release.Service }}'
+      release: '{{ .Release.Name }}'
+  template:
+    metadata:
+      labels:
+        app: '{{ template "gatekeeper-app.name" . }}'
+        chart: '{{ template "gatekeeper-app.name" . }}'
+        control-plane: controller-manager
+        heritage: '{{ .Release.Service }}'
+        release: '{{ .Release.Name }}'
+    spec:
+      containers:
+      - args:
+        - --audit-interval={{ .Values.auditInterval }}
+        - --port=8443
+        - --logtostderr
+        - --constraint-violations-limit={{ .Values.constraintViolationsLimit }}
+        command:
+        - /manager
+        env:
+        - name: POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        image: '{{ .Values.image.repository }}:{{ .Values.image.release }}'
+        imagePullPolicy: '{{ .Values.image.pullPolicy }}'
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 9090
+        name: manager
+        ports:
+        - containerPort: 8443
+          name: webhook-server
+          protocol: TCP
+        - containerPort: 8888
+          name: metrics
+          protocol: TCP
+        - containerPort: 9090
+          name: healthz
+          protocol: TCP
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 9090
+        resources: 
+{{ toYaml .Values.resources | indent 10 }}
+        securityContext:
+          allowPrivilegeEscalation: false
+          runAsGroup: 999
+          runAsNonRoot: true
+          runAsUser: 1000
+        volumeMounts:
+        - mountPath: /certs
+          name: cert
+          readOnly: true
+      nodeSelector: 
+{{ toYaml .Values.nodeSelector | indent 8 }}
+      affinity:
+{{ toYaml .Values.affinity | indent 8 }}
+      tolerations:
+{{ toYaml .Values.tolerations | indent 8 }}
+      serviceAccountName: {{ include "gatekeeper-app.fullname" . }}
+      terminationGracePeriodSeconds: 60
+      volumes:
+      - name: cert
+        secret:
+          defaultMode: 420
+          secretName: gatekeeper-webhook-server-cert

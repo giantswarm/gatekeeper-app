@@ -1,6 +1,37 @@
 apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  creationTimestamp: null
+  labels:
+    app: '{{ template "gatekeeper-app.name" . }}'
+    chart: '{{ template "gatekeeper-app.name" . }}'
+    heritage: '{{ .Release.Service }}'
+    release: '{{ .Release.Name }}'
+  name: {{ include "gatekeeper-app.fullname" . }}-manager-role
+  namespace: {{ .Release.Namespace }}
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - secrets
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+---
+apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
+  creationTimestamp: null
+  labels:
+    app: '{{ template "gatekeeper-app.name" . }}'
+    chart: '{{ template "gatekeeper-app.name" . }}'
+    heritage: '{{ .Release.Service }}'
+    release: '{{ .Release.Name }}'
   name: {{ include "gatekeeper-app.fullname" . }}-manager-role
 rules:
 - apiGroups:
@@ -11,152 +42,121 @@ rules:
   - get
   - list
   - watch
-  - update
+- apiGroups:
+  - admissionregistration.k8s.io
+  resources:
+  - validatingwebhookconfigurations
+  verbs:
+  - create
+  - delete
+  - get
+  - list
   - patch
+  - update
+  - watch
+- apiGroups:
+  - apiextensions.k8s.io
+  resources:
+  - customresourcedefinitions
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - config.gatekeeper.sh
   resources:
   - configs
   verbs:
+  - create
+  - delete
   - get
   - list
-  - watch
-  - create
-  - update
   - patch
-  - delete
+  - update
+  - watch
 - apiGroups:
   - config.gatekeeper.sh
   resources:
   - configs/status
   verbs:
   - get
-  - update
   - patch
+  - update
 - apiGroups:
   - constraints.gatekeeper.sh
   resources:
   - '*'
   verbs:
+  - create
+  - delete
   - get
   - list
-  - watch
-  - create
-  - update
   - patch
-  - delete
-- apiGroups:
-  - apiextensions.k8s.io
-  resources:
-  - customresourcedefinitions
-  verbs:
-  - get
-  - list
-  - watch
-  - create
   - update
-  - patch
-  - delete
+  - watch
 - apiGroups:
   - templates.gatekeeper.sh
   resources:
   - constrainttemplates
   verbs:
+  - create
+  - delete
   - get
   - list
-  - watch
-  - create
-  - update
   - patch
-  - delete
+  - update
+  - watch
 - apiGroups:
   - templates.gatekeeper.sh
   resources:
   - constrainttemplates/status
   verbs:
   - get
-  - update
   - patch
-- apiGroups:
-  - constraints.gatekeeper.sh
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-  - create
   - update
-  - patch
-  - delete
-- apiGroups:
-  - '*'
-  resources:
-  - '*'
-  verbs:
-  - get
-  - list
-  - watch
-- apiGroups:
-  - ""
-  resources:
-  - configmaps
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - admissionregistration.k8s.io
-  resources:
-  - mutatingwebhookconfigurations
-  - validatingwebhookconfigurations
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - secrets
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
-- apiGroups:
-  - ""
-  resources:
-  - services
-  verbs:
-  - get
-  - list
-  - watch
-  - create
-  - update
-  - patch
-  - delete
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
+  labels:
+    app: '{{ template "gatekeeper-app.name" . }}'
+    chart: '{{ template "gatekeeper-app.name" . }}'
+    heritage: '{{ .Release.Service }}'
+    release: '{{ .Release.Name }}'
+  name: {{ include "gatekeeper-app.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  labels:
+    app: '{{ template "gatekeeper-app.name" . }}'
+    chart: '{{ template "gatekeeper-app.name" . }}'
+    heritage: '{{ .Release.Service }}'
+    release: '{{ .Release.Name }}'
+  name: {{ include "gatekeeper-app.fullname" . }}-manager-rolebinding
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "gatekeeper-app.fullname" . }}-manager-role
+subjects:
+- kind: ServiceAccount
   name: {{ include "gatekeeper-app.fullname" . }}
   namespace: {{ .Release.Namespace }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  creationTimestamp: null
+  labels:
+    app: '{{ template "gatekeeper-app.name" . }}'
+    chart: '{{ template "gatekeeper-app.name" . }}'
+    heritage: '{{ .Release.Service }}'
+    release: '{{ .Release.Name }}'
   name: {{ include "gatekeeper-app.fullname" . }}-manager-rolebinding
 roleRef:
   apiGroup: rbac.authorization.k8s.io
