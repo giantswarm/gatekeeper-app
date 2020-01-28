@@ -8,7 +8,7 @@ UPSTREAM_CHART_PATH="chart/gatekeeper-operator/"
 LOCAL_CHART_PATH="../helm/gatekeeper-app/"
 PATCH_FILES="../patch/*.patch"
 
-SCRIPT_PATH=$(dirname $0)
+SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd -P)"
 TMP=$(mktemp -d)
 trap "rm -rf $TMP" EXIT
 
