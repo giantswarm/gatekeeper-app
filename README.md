@@ -7,7 +7,7 @@ Here we define the Gatekeeper chart with its templates and default configuration
 
 ## Development
 
-How to install your gatekeeper into a tenant cluster
+How to install gatekeeper into a tenant cluster
 
 ```
 $ GITHUB_TOKEN=<your github token> # created at https://github.com/settings/token
