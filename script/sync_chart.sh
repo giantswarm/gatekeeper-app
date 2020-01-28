@@ -30,7 +30,7 @@ rsync -av --delete --exclude-from=$SCRIPT_PATH/ignored_files $TMP/$UPSTREAM_CHAR
 
 echo "=====> patching chart"
 for file in $SCRIPT_PATH/$PATCH_FILES; do
-    patch -p1 -d helm/gatekeeper-app < $file
+    patch -p1 -d $SCRIPT_PATH/$LOCAL_CHART_PATH < $file
 done
 
 echo "=====> done"
