@@ -16,7 +16,7 @@ echo "=====> fetching upstream chart"
 git clone $UPSTREAM_REPO_URL $TMP
 
 echo "=====> syncing chart"
-rsync -av --exclude-from=$SCRIPT_PATH/ignored_files $TMP/$UPSTREAM_CHART_PATH $SCRIPT_PATH/$LOCAL_CHART_PATH
+rsync -av --delete --exclude-from=$SCRIPT_PATH/ignored_files $TMP/$UPSTREAM_CHART_PATH $SCRIPT_PATH/$LOCAL_CHART_PATH
 
 echo "=====> patching chart"
 for file in $SCRIPT_PATH/$PATCH_FILES; do
