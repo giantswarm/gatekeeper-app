@@ -1,5 +1,4 @@
 Chart.yaml
 .helmignore
 *.sh
-*.tpl
 helm-modifications/
