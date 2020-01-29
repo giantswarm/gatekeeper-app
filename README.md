@@ -15,6 +15,58 @@ $ BRANCH=master
 $ helm --tiller-namespace=giantswarm install https://giantswarm.github.io/giantswarm-incubator-test-catalog/gatekeeper-app-0.0.0-$(curl -sSH "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/giantswarm/gatekeeper-app/commits/$BRANCH|jq -r .sha).tgz --name gatekeeper
 ```
 
+## Sync with upstream
+
+In order sync this gatekeeper chart with the upstream repository, you can the script at [`script/sync_chart.sh`](script/sync_chart.sh)
+
+Output example:
+
+```
+$ ./script/sync_chart.sh
+=====> fetching upstream chart
+Cloning into '/var/folders/g0/z1wf7ry91lbcct5ghd7vwvgm0000gn/T/tmp.j8R9dpMP'...
+remote: Enumerating objects: 10278, done.
+remote: Total 10278 (delta 0), reused 0 (delta 0), pack-reused 10278
+Receiving objects: 100% (10278/10278), 25.13 MiB | 13.78 MiB/s, done.
+Resolving deltas: 100% (4821/4821), done.
+=====> syncing chart
+building file list ... done
+./
+values.yaml
+templates/
+templates/_helpers.tpl
+templates/gatekeeper.yaml
+
+sent 17077 bytes  received 98 bytes  34350.00 bytes/sec
+total size is 16770  speedup is 0.98
+=====> patching chart
+patching file templates/gatekeeper.yaml
+patching file templates/gatekeeper.yaml
+=====> done
+```
+
+If for any reason you need to make changes to the upstream chart please create a patch file and store it in the [`patch`](patch) directory. This help us track which changes we make to the upstream repository and make the review process easier as we only need to review the patches files rather than the entier chart changes.
+
+To create a patch, first run the sync script then make changes to the chart and write the patch using:
+
+```
+$ git -C helm/gatekeeper-app diff --relative |tee patch/XX.foo.patch
+diff --git a/templates/gatekeeper.yaml b/templates/gatekeeper.yaml
+index c80b26f..592fca0 100644
+--- a/templates/gatekeeper.yaml
++++ b/templates/gatekeeper.yaml
+@@ -11,6 +11,7 @@ metadata:
+     chart: '{{ template "gatekeeper-operator.name" . }}'
+     heritage: '{{ .Release.Service }}'
+     release: '{{ .Release.Name }}'
++    foo: bar
+   name: configs.config.gatekeeper.sh
+ spec:
+   group: config.gatekeeper.sh
+```
+
+Where XX is the next patch number, because patch files need to be ordered from oldest to newest.
+
 ## Credit
 
 * [Upstream Repository](https://github.com/open-policy-agent/gatekeeper)
