@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2020-01-30
+
 ### Added
 
 - Add helm charts.
 - Add script to sync upstream changes in the helm chart.
 
-[Unreleased]: https://github.com/giantswarm/gatekeeper-app/tree/master
+[Unreleased]: https://github.com/giantswarm/gatekeeper-app/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/giantswarm/gatekeeper-app/tag/v0.1.0
