@@ -17,7 +17,7 @@ $ helm --tiller-namespace=giantswarm install https://giantswarm.github.io/giants
 
 ## Sync with upstream
 
-In order sync this gatekeeper chart with the upstream repository, you can the script at [`script/sync_chart.sh`](script/sync_chart.sh)
+In order sync this gatekeeper chart with the upstream repository, you can use the script at [`script/sync_chart.sh`](script/sync_chart.sh)
 
 Output example:
 
