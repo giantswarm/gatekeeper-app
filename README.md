@@ -45,7 +45,7 @@ patching file templates/gatekeeper.yaml
 =====> done
 ```
 
-If for any reason you need to make changes to the upstream chart please create a patch file and store it in the [`patch`](patch) directory. This help us track which changes we make to the upstream repository and make the review process easier as we only need to review the patches files rather than the entier chart changes.
+If for any reason you need to make changes to the upstream chart please create a patch file and store it in the [`patch`](patch) directory. This will help us track which changes we make to the upstream repository and make the review process easier as we only need to review the patches files rather than the entire chart changes.
 
 To create a patch, first run the sync script then make changes to the chart and write the patch using:
 
