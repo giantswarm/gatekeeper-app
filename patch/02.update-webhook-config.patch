@@ -1,0 +1,37 @@
+diff --git a/templates/gatekeeper.yaml b/templates/gatekeeper.yaml
+index ba9483b..b297f80 100644
+--- a/templates/gatekeeper.yaml
++++ b/templates/gatekeeper.yaml
+@@ -528,7 +528,7 @@ webhooks:
+       name: gatekeeper-webhook-service
+       namespace: {{ .Release.Namespace }}
+       path: /v1/admit
+-  failurePolicy: Ignore
++  failurePolicy: Fail
+   name: validation.gatekeeper.sh
+   namespaceSelector:
+     matchExpressions:
+@@ -548,23 +548,3 @@ webhooks:
+     - '*'
+   sideEffects: None
+   timeoutSeconds: 5
+-- clientConfig:
+-    caBundle: Cg==
+-    service:
+-      name: gatekeeper-webhook-service
+-      namespace: {{ .Release.Namespace }}
+-      path: /v1/admitlabel
+-  failurePolicy: Fail
+-  name: check-ignore-label.gatekeeper.sh
+-  rules:
+-  - apiGroups:
+-    - ""
+-    apiVersions:
+-    - '*'
+-    operations:
+-    - CREATE
+-    - UPDATE
+-    resources:
+-    - namespaces
+-  sideEffects: None
+-  timeoutSeconds: 5
