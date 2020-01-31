@@ -28,7 +28,7 @@ tmp=$(mktemp -d)
 trap "rm -rf $tmp" EXIT
 
 echo "=====> fetching upstream chart"
-git clone $upstream_repo_url $tmp
+git clone --depth 1 $upstream_repo_url $tmp
 
 echo "=====> syncing chart"
 rsync -av --delete --exclude-from=$script_path/$ignored_files $tmp/$upstream_chart_path $script_path/$local_chart_path
@@ -37,5 +37,10 @@ echo "=====> patching chart"
 for file in $script_path/$patch_files; do
     patch -p1 -d $script_path/$local_chart_path < $file
 done
+
+echo "=====> set appVersion in Chart.yaml"
+app_version=$(cat $tmp/$upstream_chart_path/Chart.yaml|grep appVersion)
+sed -E -i '' -e "s/^appVersion:.+$/${app_version}/g" "$script_path/$local_chart_path/Chart.yaml"
+echo "set to: $app_version"
 
 echo "=====> done"
