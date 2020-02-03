@@ -530,10 +530,8 @@ webhooks:
       path: /v1/admit
   failurePolicy: Fail
   name: validation.gatekeeper.sh
-  namespaceSelector:
+  objectSelector:
     matchExpressions:
-    - key: control-plane
-      operator: DoesNotExist
     - key: admission.gatekeeper.sh/ignore
       operator: DoesNotExist
   rules:
