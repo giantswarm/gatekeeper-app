@@ -423,6 +423,7 @@ metadata:
     gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
+    admission.gatekeeper.sh/ignore: true
   name: gatekeeper-controller-manager
   namespace: {{ .Release.Namespace }}
 spec:
