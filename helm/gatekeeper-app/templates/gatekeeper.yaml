@@ -423,7 +423,6 @@ metadata:
     gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
-    admission.gatekeeper.sh/ignore: "yes"
   name: gatekeeper-controller-manager
   namespace: {{ .Release.Namespace }}
 spec:
@@ -445,7 +444,6 @@ spec:
         gatekeeper.sh/system: "yes"
         heritage: '{{ .Release.Service }}'
         release: '{{ .Release.Name }}'
-        admission.gatekeeper.sh/ignore: "yes"
     spec:
       containers:
       - args:
@@ -533,7 +531,7 @@ webhooks:
   name: validation.gatekeeper.sh
   objectSelector:
     matchExpressions:
-    - key: admission.gatekeeper.sh/ignore
+    - key: gatekeeper.sh/system
       operator: DoesNotExist
   rules:
   - apiGroups:
