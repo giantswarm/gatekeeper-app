@@ -17,8 +17,10 @@ patch_files="../patch/*.patch"
 # Path to ignored files list, relative to this script
 ignored_files="ignored_files"
 
+ref="$1"
+
 # Exit on error
-set -e
+set -eu
 # Expand filename pattern to null when no files are found
 shopt -s nullglob
 
@@ -28,7 +30,9 @@ tmp=$(mktemp -d)
 trap "rm -rf $tmp" EXIT
 
 echo "=====> fetching upstream chart"
-git clone --depth 1 $upstream_repo_url $tmp
+extra_arg=""
+if [ -n "$ref" ]; then extra_arg+="--branch $ref"; fi
+git clone --depth 1 $extra_arg $upstream_repo_url $tmp
 
 echo "=====> syncing chart"
 rsync -av --delete --exclude-from=$script_path/$ignored_files $tmp/$upstream_chart_path $script_path/$local_chart_path

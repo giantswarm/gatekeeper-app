@@ -11,27 +11,3 @@ index ba9483b..b297f80 100644
    name: validation.gatekeeper.sh
    namespaceSelector:
      matchExpressions:
-@@ -546,23 +546,3 @@ webhooks:
-     - '*'
-   sideEffects: None
-   timeoutSeconds: 5
--- clientConfig:
--    caBundle: Cg==
--    service:
--      name: gatekeeper-webhook-service
--      namespace: gatekeeper-system
--      path: /v1/admitlabel
--  failurePolicy: Fail
--  name: check-ignore-label.gatekeeper.sh
--  rules:
--  - apiGroups:
--    - ""
--    apiVersions:
--    - '*'
--    operations:
--    - CREATE
--    - UPDATE
--    resources:
--    - namespaces
--  sideEffects: None
--  timeoutSeconds: 5
