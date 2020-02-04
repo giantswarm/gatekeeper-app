@@ -2,9 +2,11 @@ apiVersion: v1
 kind: Namespace
 metadata:
   labels:
+    admission.gatekeeper.sh/ignore: no-self-managing
     app: '{{ template "gatekeeper-operator.name" . }}'
     chart: '{{ template "gatekeeper-operator.name" . }}'
     control-plane: controller-manager
+    gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
   name: gatekeeper-system
@@ -13,13 +15,14 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.2
+    controller-gen.kubebuilder.io/version: v0.2.4
     helm.sh/hook: crd-install
     helm.sh/hook-delete-policy: before-hook-creation
   creationTimestamp: null
   labels:
     app: '{{ template "gatekeeper-operator.name" . }}'
     chart: '{{ template "gatekeeper-operator.name" . }}'
+    gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
   name: configs.config.gatekeeper.sh
@@ -155,6 +158,10 @@ spec:
                       properties:
                         kind:
                           type: string
+                        shortNames:
+                          items:
+                            type: string
+                          type: array
                       type: object
                     validation:
                       type: object
@@ -210,6 +217,18 @@ spec:
     served: true
     storage: false
 ---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  labels:
+    app: '{{ template "gatekeeper-operator.name" . }}'
+    chart: '{{ template "gatekeeper-operator.name" . }}'
+    gatekeeper.sh/system: "yes"
+    heritage: '{{ .Release.Service }}'
+    release: '{{ .Release.Name }}'
+  name: gatekeeper-admin
+  namespace: gatekeeper-system
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
@@ -217,6 +236,7 @@ metadata:
   labels:
     app: '{{ template "gatekeeper-operator.name" . }}'
     chart: '{{ template "gatekeeper-operator.name" . }}'
+    gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
   name: gatekeeper-manager-role
@@ -242,6 +262,7 @@ metadata:
   labels:
     app: '{{ template "gatekeeper-operator.name" . }}'
     chart: '{{ template "gatekeeper-operator.name" . }}'
+    gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
   name: gatekeeper-manager-role
@@ -337,6 +358,7 @@ metadata:
   labels:
     app: '{{ template "gatekeeper-operator.name" . }}'
     chart: '{{ template "gatekeeper-operator.name" . }}'
+    gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
   name: gatekeeper-manager-rolebinding
@@ -347,7 +369,7 @@ roleRef:
   name: gatekeeper-manager-role
 subjects:
 - kind: ServiceAccount
-  name: default
+  name: gatekeeper-admin
   namespace: gatekeeper-system
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -356,6 +378,7 @@ metadata:
   labels:
     app: '{{ template "gatekeeper-operator.name" . }}'
     chart: '{{ template "gatekeeper-operator.name" . }}'
+    gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
   name: gatekeeper-manager-rolebinding
@@ -365,7 +388,7 @@ roleRef:
   name: gatekeeper-manager-role
 subjects:
 - kind: ServiceAccount
-  name: default
+  name: gatekeeper-admin
   namespace: gatekeeper-system
 ---
 apiVersion: v1
@@ -374,6 +397,7 @@ metadata:
   labels:
     app: '{{ template "gatekeeper-operator.name" . }}'
     chart: '{{ template "gatekeeper-operator.name" . }}'
+    gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
   name: gatekeeper-webhook-server-cert
@@ -385,6 +409,7 @@ metadata:
   labels:
     app: '{{ template "gatekeeper-operator.name" . }}'
     chart: '{{ template "gatekeeper-operator.name" . }}'
+    gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
   name: gatekeeper-webhook-service
@@ -397,6 +422,7 @@ spec:
     app: '{{ template "gatekeeper-operator.name" . }}'
     chart: '{{ template "gatekeeper-operator.name" . }}'
     control-plane: controller-manager
+    gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
 ---
@@ -407,6 +433,7 @@ metadata:
     app: '{{ template "gatekeeper-operator.name" . }}'
     chart: '{{ template "gatekeeper-operator.name" . }}'
     control-plane: controller-manager
+    gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
   name: gatekeeper-controller-manager
@@ -418,6 +445,7 @@ spec:
       app: '{{ template "gatekeeper-operator.name" . }}'
       chart: '{{ template "gatekeeper-operator.name" . }}'
       control-plane: controller-manager
+      gatekeeper.sh/system: "yes"
       heritage: '{{ .Release.Service }}'
       release: '{{ .Release.Name }}'
   template:
@@ -426,15 +454,16 @@ spec:
         app: '{{ template "gatekeeper-operator.name" . }}'
         chart: '{{ template "gatekeeper-operator.name" . }}'
         control-plane: controller-manager
+        gatekeeper.sh/system: "yes"
         heritage: '{{ .Release.Service }}'
         release: '{{ .Release.Name }}'
     spec:
       containers:
       - args:
-        - --auditInterval={{ .Values.auditInterval }}
+        - --audit-interval={{ .Values.auditInterval }}
         - --port=8443
         - --logtostderr
-        - --constraintViolationsLimit={{ .Values.constraintViolationsLimit }}
+        - --constraint-violations-limit={{ .Values.constraintViolationsLimit }}
         command:
         - /manager
         env:
@@ -485,6 +514,7 @@ spec:
 {{ toYaml .Values.affinity | indent 8 }}
       tolerations:
 {{ toYaml .Values.tolerations | indent 8 }}
+      serviceAccountName: gatekeeper-admin
       terminationGracePeriodSeconds: 60
       volumes:
       - name: cert
@@ -499,6 +529,7 @@ metadata:
   labels:
     app: '{{ template "gatekeeper-operator.name" . }}'
     chart: '{{ template "gatekeeper-operator.name" . }}'
+    gatekeeper.sh/system: "yes"
     heritage: '{{ .Release.Service }}'
     release: '{{ .Release.Name }}'
   name: gatekeeper-validating-webhook-configuration
@@ -509,11 +540,13 @@ webhooks:
       name: gatekeeper-webhook-service
       namespace: gatekeeper-system
       path: /v1/admit
-  failurePolicy: Fail
+  failurePolicy: Ignore
   name: validation.gatekeeper.sh
   namespaceSelector:
     matchExpressions:
     - key: control-plane
+      operator: DoesNotExist
+    - key: admission.gatekeeper.sh/ignore
       operator: DoesNotExist
   rules:
   - apiGroups:
@@ -525,5 +558,25 @@ webhooks:
     - UPDATE
     resources:
     - '*'
+  sideEffects: None
+  timeoutSeconds: 5
+- clientConfig:
+    caBundle: Cg==
+    service:
+      name: gatekeeper-webhook-service
+      namespace: gatekeeper-system
+      path: /v1/admitlabel
+  failurePolicy: Fail
+  name: check-ignore-label.gatekeeper.sh
+  rules:
+  - apiGroups:
+    - ""
+    apiVersions:
+    - '*'
+    operations:
+    - CREATE
+    - UPDATE
+    resources:
+    - namespaces
   sideEffects: None
   timeoutSeconds: 5
