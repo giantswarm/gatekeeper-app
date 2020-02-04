@@ -2,15 +2,21 @@ diff --git a/templates/gatekeeper.yaml b/templates/gatekeeper.yaml
 index ba9483b..b297f80 100644
 --- a/templates/gatekeeper.yaml
 +++ b/templates/gatekeeper.yaml
-@@ -528,7 +528,7 @@ webhooks:
+@@ -528,12 +528,10 @@ webhooks:
        name: gatekeeper-webhook-service
        namespace: {{ .Release.Namespace }}
        path: /v1/admit
 -  failurePolicy: Ignore
 +  failurePolicy: Fail
    name: validation.gatekeeper.sh
-   namespaceSelector:
+-  namespaceSelector:
++  objectSelector:
      matchExpressions:
+-    - key: control-plane
+-      operator: DoesNotExist
+     - key: admission.gatekeeper.sh/ignore
+       operator: DoesNotExist
+   rules:
 @@ -548,23 +548,3 @@ webhooks:
      - '*'
    sideEffects: None
