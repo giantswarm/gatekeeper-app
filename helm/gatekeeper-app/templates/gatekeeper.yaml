@@ -445,6 +445,7 @@ spec:
         gatekeeper.sh/system: "yes"
         heritage: '{{ .Release.Service }}'
         release: '{{ .Release.Name }}'
+        admission.gatekeeper.sh/ignore: "yes"
     spec:
       containers:
       - args:
