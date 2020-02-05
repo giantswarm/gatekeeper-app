@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Added
+
+- Bump chart to v3.1.0-beta.5
+- Remove custom modifications
+
 ## [0.1.0] - 2020-01-30
 
 ### Added
