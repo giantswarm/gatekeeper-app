@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  architect: giantswarm/architect@0.4.3
+  architect: giantswarm/architect@0.5.2
 
 workflows:
   build-and-push:
@@ -19,6 +19,7 @@ workflows:
           name: push-gatekeeper-app-to-aws-app-collection
           app_name: "gatekeeper-app"
           app_collection_repo: "aws-app-collection"
+          unique: "true"
           requires:
             - push-gatekeeper-app-to-control-plane-app-catalog
           filters:
@@ -31,6 +32,7 @@ workflows:
           name: push-gatekeeper-app-to-azure-app-collection
           app_name: "gatekeeper-app"
           app_collection_repo: "azure-app-collection"
+          unique: "true"
           requires:
             - push-gatekeeper-app-to-control-plane-app-catalog
           filters:
@@ -43,6 +45,7 @@ workflows:
           name: push-gatekeeper-app-to-kvm-app-collection
           app_name: "gatekeeper-app"
           app_collection_repo: "kvm-app-collection"
+          unique: "true"
           requires:
             - push-gatekeeper-app-to-control-plane-app-catalog
           filters:
