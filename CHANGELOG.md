@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Bump version to v3.1.0-beta.5.
 - Remove custom modifications.
 
+### Fixed
+
+- Fix internal release process.
+
 ## [0.1.3] - 2020-02-03
 
 ### Fixed
