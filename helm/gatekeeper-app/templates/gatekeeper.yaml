@@ -478,7 +478,7 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: metadata.name
-        image: '{{ .Values.image.repository }}:{{ .Values.image.release }}'
+        image: '{{ .Values.Installation.V1.Registry.Domain }}/{{ .Values.image.name }}:{{ .Values.image.release }}'
         imagePullPolicy: '{{ .Values.image.pullPolicy }}'
         livenessProbe:
           httpGet:
