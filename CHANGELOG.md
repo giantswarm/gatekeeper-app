@@ -13,7 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Bump version to v3.1.0-beta.5.
 - Remove custom modifications.
-- Use giantswarm docker image
+- Use giantswarm docker image.
 
 ### Fixed
 
