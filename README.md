@@ -22,7 +22,7 @@ $ sed 's#\[\[ .Version \]\]#$(architect project version)#' ./helm/gatekeeper-app
 $ helm --kube-context=giantswarm-z80tk --tiller-namespace=giantswarm install --name gatekeeper ./helm/gatekeeper-app
 ```
 
-## Sync with upstream
+## Sync chart with upstream
 
 In order sync this gatekeeper chart with the upstream repository, you can use the script at [`script/sync_chart.sh`](script/sync_chart.sh)
 
