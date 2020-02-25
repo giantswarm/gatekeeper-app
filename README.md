@@ -7,13 +7,9 @@ Here we define the Gatekeeper chart with its templates and default configuration
 
 ## Release new version
 
-* update changelog, see https://github.com/giantswarm/gatekeeper-app/pull/18/files#diff-4ac32a78649ca5bdd8e0ba38b7006a1e
-* create git tag
-
-```
-$ git tag v0.1.4
-$ git push origin v0.1.4
-```
+* create a PR to update changelog, see https://github.com/giantswarm/gatekeeper-app/pull/18/files#diff-4ac32a78649ca5bdd8e0ba38b7006a1e
+* create a release via https://github.com/giantswarm/gatekeeper-app/releases/new
+* ci will do its job and deploy this to installations
 
 ## Development
 
