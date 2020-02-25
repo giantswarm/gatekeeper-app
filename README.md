@@ -23,7 +23,6 @@ How to install gatekeeper into a tenant cluster
 $ git clone git@github.com:giantswarm/gatekeeper-app.git
 $ cd gatekeeper-app
 $ sed 's#\[\[ .Version \]\]#0.1.0#' ./helm/gatekeeper-app/Chart.yaml
-$ kubectl config use-context giantswarm-z80tk
 $ helm --kube-context= giantswarm-z80tk --tiller-namespace=giantswarm install --name gatekeeper ./helm/gatekeeper-app
 ```
 
