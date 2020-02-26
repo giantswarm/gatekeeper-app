@@ -5,17 +5,24 @@
 Giant Swarm offers a Gatekeeper Managed App which can be installed in tenant clusters.
 Here we define the Gatekeeper chart with its templates and default configuration.
 
+## Release new version
+
+* create a PR to update changelog, see https://github.com/giantswarm/gatekeeper-app/pull/18/files#diff-4ac32a78649ca5bdd8e0ba38b7006a1e
+* create a release via https://github.com/giantswarm/gatekeeper-app/releases/new
+* ci will do its job and deploy this to installations
+
 ## Development
 
 How to install gatekeeper into a tenant cluster
 
 ```
-$ GITHUB_TOKEN=<your github token> # created at https://github.com/settings/token
-$ BRANCH=master
-$ helm --tiller-namespace=giantswarm install https://giantswarm.github.io/giantswarm-incubator-test-catalog/gatekeeper-app-0.0.0-$(curl -sSH "Authorization: token $GITHUB_TOKEN" https://api.github.com/repos/giantswarm/gatekeeper-app/commits/$BRANCH|jq -r .sha).tgz --name gatekeeper
+$ git clone git@github.com:giantswarm/gatekeeper-app.git
+$ cd gatekeeper-app
+$ sed 's#\[\[ .Version \]\]#$(architect project version)#' ./helm/gatekeeper-app/Chart.yaml
+$ helm --kube-context=giantswarm-z80tk --tiller-namespace=giantswarm install --name gatekeeper ./helm/gatekeeper-app
 ```
 
-## Sync with upstream
+## Sync chart with upstream
 
 In order sync this gatekeeper chart with the upstream repository, you can use the script at [`script/sync_chart.sh`](script/sync_chart.sh)
 
