@@ -44,7 +44,9 @@ done
 
 echo "=====> set appVersion in Chart.yaml"
 app_version=$(cat $tmp/$upstream_chart_path/Chart.yaml|grep appVersion)
-sed -E -i '' -e "s/^appVersion:.+$/${app_version}/g" "$script_path/$local_chart_path/Chart.yaml"
+TMP_FILE=`mktemp /tmp/Chart.XXXXXXXXXX`
+sed -E -e "s/^appVersion:.+$/${app_version}/g" "$script_path/$local_chart_path/Chart.yaml" > $TMP_FILE
+mv $TMP_FILE "$script_path/$local_chart_path/Chart.yaml"
 echo "set to: $app_version"
 
 echo "=====> done"

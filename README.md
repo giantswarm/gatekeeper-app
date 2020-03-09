@@ -24,7 +24,7 @@ $ helm --kube-context=giantswarm-z80tk --tiller-namespace=giantswarm install --n
 
 ## Sync chart with upstream
 
-In order sync this gatekeeper chart with the upstream repository, you can use the script at [`script/sync_chart.sh`](script/sync_chart.sh)
+In order sync this gatekeeper chart with the upstream repository, you can use the script at [`script/sync_chart.sh`](script/sync_chart.sh) (Works best on MacOS)
 
 Output example:
 
