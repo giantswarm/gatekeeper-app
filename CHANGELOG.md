@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Update container image to v3.1.0-beta.7
+
 ## [0.1.6] - 2020-02-24
 
 - Fix internal release process.
