@@ -1,0 +1,15 @@
+diff --git a/values.yaml b/values.yaml
+index 79d7c82..44566e1 100644
+--- a/values.yaml
++++ b/values.yaml
+@@ -9,9 +9,7 @@ image:
+   pullPolicy: IfNotPresent
+ nodeSelector: {}
+ tolerations: []
+-podAnnotations: {
+-  container.seccomp.security.alpha.kubernetes.io/manager: runtime/default
+-}
++podAnnotations: {}
+ resources:
+   limits:
+     cpu: 1000m
