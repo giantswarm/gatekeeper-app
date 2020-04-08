@@ -9,9 +9,7 @@ image:
   pullPolicy: IfNotPresent
 nodeSelector: {}
 tolerations: []
-podAnnotations: {
-  container.seccomp.security.alpha.kubernetes.io/manager: runtime/default
-}
+podAnnotations: {}
 resources:
   limits:
     cpu: 1000m
