@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Sync with upstream
+- Update container image to v3.1.0-beta.8
+
 ## [0.2.0] - 2020-03-12
 
 - Update container image to v3.1.0-beta.7
