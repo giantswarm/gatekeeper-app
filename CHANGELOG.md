@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.2.1] - 2020-04-08
+
 - Sync with upstream
 - Update container image to v3.1.0-beta.8
 
@@ -60,7 +62,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add helm charts.
 - Add script to sync upstream changes in the helm chart.
 
-[Unreleased]: https://github.com/giantswarm/gatekeeper-app/compare/v0.2.0...HEAD
+[Unreleased]: https://github.com/giantswarm/gatekeeper-app/compare/v0.2.1...HEAD
+[0.2.1]: https://github.com/giantswarm/gatekeeper-app/compare/v0.2.0...v0.2.1
 [0.2.0]: https://github.com/giantswarm/gatekeeper-app/compare/v0.1.6...v0.2.0
 [0.1.6]: https://github.com/giantswarm/gatekeeper-app/compare/v0.1.5...v0.1.6
 [0.1.5]: https://github.com/giantswarm/gatekeeper-app/compare/v0.1.4...v0.1.5
