@@ -1,0 +1,270 @@
+diff --git a/templates/_helpers.tpl b/templates/_helpers.tpl
+index 2b7e513..b9fa1e1 100644
+--- a/templates/_helpers.tpl
++++ b/templates/_helpers.tpl
+@@ -1,26 +1,9 @@
++{{/* vim: set filetype=mustache: */}}
+ {{/*
+ Expand the name of the chart.
+ */}}
+ {{- define "gatekeeper-operator.name" -}}
+-{{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" -}}
+-{{- end -}}
+-
+-{{/*
+-Create a default fully qualified app name.
+-We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
+-If release name contains chart name it will be used as a full name.
+-*/}}
+-{{- define "gatekeeper-operator.fullname" -}}
+-{{- if .Values.fullnameOverride -}}
+-{{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" -}}
+-{{- else -}}
+-{{- $name := default .Chart.Name .Values.nameOverride -}}
+-{{- if contains $name .Release.Name -}}
+-{{- .Release.Name | trunc 63 | trimSuffix "-" -}}
+-{{- else -}}
+-{{- printf "%s-%s" .Release.Name $name | trunc 63 | trimSuffix "-" -}}
+-{{- end -}}
+-{{- end -}}
++{{- .Chart.Name | trunc 63 | trimSuffix "-" -}}
+ {{- end -}}
+ 
+ {{/*
+@@ -34,11 +17,19 @@ Create chart name and version as used by the chart label.
+ Common labels
+ */}}
+ {{- define "gatekeeper-operator.labels" -}}
+-app.kubernetes.io/name: {{ include "gatekeeper-operator.name" . }}
+-helm.sh/chart: {{ include "gatekeeper-operator.chart" . }}
+-app.kubernetes.io/instance: {{ .Release.Name }}
+-{{- if .Chart.AppVersion }}
++{{ include "gatekeeper-operator.selectorLabels" . }}
++app: {{ include "gatekeeper-operator.name" . | quote }}
++app.giantswarm.io/branch: {{ .Values.project.branch | quote }}
++app.giantswarm.io/commit: {{ .Values.project.commit | quote }}
++app.kubernetes.io/managed-by: {{ .Release.Service | quote }}
+ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
+-{{- end }}
+-app.kubernetes.io/managed-by: {{ .Release.Service }}
++helm.sh/chart: {{ include "gatekeeper-operator.chart" . | quote }}
++{{- end -}}
++
++{{/*
++Selector labels
++*/}}
++{{- define "gatekeeper-operator.selectorLabels" -}}
++app.kubernetes.io/name: {{ include "gatekeeper-operator.name" . | quote }}
++app.kubernetes.io/instance: {{ .Release.Name | quote }}
+ {{- end -}}
+diff --git a/templates/gatekeeper.yaml b/templates/gatekeeper.yaml
+index fe8dc01..4cf7f32 100644
+--- a/templates/gatekeeper.yaml
++++ b/templates/gatekeeper.yaml
+@@ -2,13 +2,10 @@ apiVersion: v1
+ kind: Namespace
+ metadata:
+   labels:
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     admission.gatekeeper.sh/ignore: no-self-managing
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
+     control-plane: controller-manager
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: gatekeeper-system
+ ---
+ apiVersion: apiextensions.k8s.io/v1beta1
+@@ -20,11 +17,8 @@ metadata:
+     helm.sh/hook-delete-policy: before-hook-creation
+   creationTimestamp: null
+   labels:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: configs.config.gatekeeper.sh
+ spec:
+   group: config.gatekeeper.sh
+@@ -119,11 +113,8 @@ metadata:
+     helm.sh/hook-delete-policy: before-hook-creation
+   creationTimestamp: null
+   labels:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     controller-tools.k8s.io: "1.0"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: constrainttemplates.templates.gatekeeper.sh
+ spec:
+   group: templates.gatekeeper.sh
+@@ -226,11 +217,8 @@ apiVersion: v1
+ kind: ServiceAccount
+ metadata:
+   labels:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: gatekeeper-admin
+   namespace: gatekeeper-system
+ ---
+@@ -239,11 +227,8 @@ kind: Role
+ metadata:
+   creationTimestamp: null
+   labels:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: gatekeeper-manager-role
+   namespace: gatekeeper-system
+ rules:
+@@ -265,11 +250,8 @@ kind: ClusterRole
+ metadata:
+   creationTimestamp: null
+   labels:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: gatekeeper-manager-role
+ rules:
+ - apiGroups:
+@@ -363,11 +345,8 @@ apiVersion: rbac.authorization.k8s.io/v1
+ kind: RoleBinding
+ metadata:
+   labels:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: gatekeeper-manager-rolebinding
+   namespace: gatekeeper-system
+ roleRef:
+@@ -383,11 +362,8 @@ apiVersion: rbac.authorization.k8s.io/v1
+ kind: ClusterRoleBinding
+ metadata:
+   labels:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: gatekeeper-manager-rolebinding
+ roleRef:
+   apiGroup: rbac.authorization.k8s.io
+@@ -402,11 +378,8 @@ apiVersion: v1
+ kind: Secret
+ metadata:
+   labels:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: gatekeeper-webhook-server-cert
+   namespace: gatekeeper-system
+ ---
+@@ -414,11 +387,8 @@ apiVersion: v1
+ kind: Service
+ metadata:
+   labels:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: gatekeeper-webhook-service
+   namespace: gatekeeper-system
+ spec:
+@@ -426,46 +396,33 @@ spec:
+   - port: 443
+     targetPort: 8443
+   selector:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
++    {{- include "gatekeeper-operator.selectorLabels" . | nindent 4 }}
+     control-plane: controller-manager
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+ ---
+ apiVersion: apps/v1
+ kind: Deployment
+ metadata:
+   labels:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
+-    control-plane: controller-manager
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: gatekeeper-controller-manager
+   namespace: gatekeeper-system
+ spec:
+   replicas: {{ .Values.replicas }}
+   selector:
+     matchLabels:
+-      app: '{{ template "gatekeeper-operator.name" . }}'
+-      chart: '{{ template "gatekeeper-operator.name" . }}'
++      {{- include "gatekeeper-operator.selectorLabels" . | nindent 6 }}
+       control-plane: controller-manager
+       gatekeeper.sh/system: "yes"
+-      heritage: '{{ .Release.Service }}'
+-      release: '{{ .Release.Name }}'
+   template:
+     metadata:
+       annotations: 
+ {{- toYaml .Values.podAnnotations | trim | nindent 8 }}
+       labels:
+-        app: '{{ template "gatekeeper-operator.name" . }}'
+-        chart: '{{ template "gatekeeper-operator.name" . }}'
++        {{- include "gatekeeper-operator.selectorLabels" . | nindent 8 }}
+         control-plane: controller-manager
+         gatekeeper.sh/system: "yes"
+-        heritage: '{{ .Release.Service }}'
+-        release: '{{ .Release.Name }}'
+     spec:
+       containers:
+       - args:
+@@ -542,11 +499,8 @@ kind: ValidatingWebhookConfiguration
+ metadata:
+   creationTimestamp: null
+   labels:
+-    app: '{{ template "gatekeeper-operator.name" . }}'
+-    chart: '{{ template "gatekeeper-operator.name" . }}'
++    {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+     gatekeeper.sh/system: "yes"
+-    heritage: '{{ .Release.Service }}'
+-    release: '{{ .Release.Name }}'
+   name: gatekeeper-validating-webhook-configuration
+ webhooks:
+ - clientConfig:
+diff --git a/values.yaml b/values.yaml
+index 44566e1..3b0eee4 100644
+--- a/values.yaml
++++ b/values.yaml
+@@ -17,3 +17,6 @@ resources:
+   requests:
+     cpu: 100m
+     memory: 256Mi
++project:
++  branch: "[[ .Branch ]]"
++  commit: "[[ .SHA ]]"
