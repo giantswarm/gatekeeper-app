@@ -20,3 +20,7 @@ resources:
 project:
   branch: "[[ .Branch ]]"
   commit: "[[ .SHA ]]"
+Installation:
+  V1:
+    Registry:
+      Domain: quay.io

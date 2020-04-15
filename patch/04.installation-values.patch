@@ -1,0 +1,12 @@
+diff --git a/values.yaml b/values.yaml
+index 3b0eee4..00f6ae0 100644
+--- a/values.yaml
++++ b/values.yaml
+@@ -20,3 +20,7 @@ resources:
+ project:
+   branch: "[[ .Branch ]]"
+   commit: "[[ .SHA ]]"
++Installation:
++  V1:
++    Registry:
++      Domain: quay.io
