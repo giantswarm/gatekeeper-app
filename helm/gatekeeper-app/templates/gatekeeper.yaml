@@ -8,8 +8,10 @@ metadata:
     gatekeeper.sh/system: "yes"
   name: gatekeeper-system
 ---
+{{- if eq .Release.Service "Tiller" }}
 {{- range $path, $bytes := .Files.Glob "crds/*.yaml" }}
   {{ $.Files.Get $path }}
+{{- end }}
 ---
 {{- end }}
 apiVersion: v1
