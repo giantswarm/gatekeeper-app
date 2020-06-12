@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## Removed
+
+- Remove check-ignore-label.gatekeeper.sh from validating webhook
+
 ## [0.3.1] - 2020-05-20
 
 - Moving CRDs into a separate directory
