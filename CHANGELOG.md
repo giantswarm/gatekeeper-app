@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Increase memory limit to 1024 Mb.
+
 ## [0.3.1] - 2020-05-20
 
 - Moving CRDs into a separate directory
