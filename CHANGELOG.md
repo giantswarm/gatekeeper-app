@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Removed
 
-- Remove check-ignore-label.gatekeeper.sh from validating webhook (#34)
+- Remove check-ignore-label.gatekeeper.sh from validating webhook [#34](https://github.com/giantswarm/gatekeeper-app/pull/34)
 
 ## [0.3.2] - 2020-07-03
 
