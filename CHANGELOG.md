@@ -11,6 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Remove check-ignore-label.gatekeeper.sh from validating webhook
 
+## [0.3.2] - 2020-07-03
+
+- Increase memory limit to 1024 Mb.
+
 ## [0.3.1] - 2020-05-20
 
 - Moving CRDs into a separate directory
