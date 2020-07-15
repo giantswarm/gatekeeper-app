@@ -187,8 +187,11 @@ metadata:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    {{- include "monitoringConfigurationAnnotations" . | nindent 4 }}
   labels:
     {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+    {{- include "monitoringLabels" . | nindent 4 }}
     gatekeeper.sh/system: "yes"
   name: gatekeeper-webhook-service
   namespace: gatekeeper-system
