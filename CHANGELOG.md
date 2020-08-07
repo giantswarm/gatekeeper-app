@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Add Prometheus labels/annotations to GateKeeper service to enable automatic
+  scraping by GS Prometheus [#41](https://github.com/giantswarm/gatekeeper-app/pull/41)
+
 ## [1.0.0] - 2020-07-06
 
 ## Removed
