@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2020-08-07
+
 ### Added
 
 - Add Prometheus labels/annotations to GateKeeper service to enable automatic
@@ -14,7 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [1.0.0] - 2020-07-06
 
-## Removed
+### Removed
 
 - Remove check-ignore-label.gatekeeper.sh from validating webhook [#34](https://github.com/giantswarm/gatekeeper-app/pull/34)
 
@@ -55,7 +57,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.4] - 2020-02-06
 
-## Added
+### Added
 
 - Bump version to v3.1.0-beta.5.
 - Remove custom modifications.
@@ -89,7 +91,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add helm charts.
 - Add script to sync upstream changes in the helm chart.
 
-[Unreleased]: https://github.com/giantswarm/gatekeeper-app/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/giantswarm/gatekeeper-app/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/giantswarm/gatekeeper-app/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/giantswarm/gatekeeper-app/compare/v0.3.2...v1.0.0
 [0.3.2]: https://github.com/giantswarm/gatekeeper-app/compare/v0.3.1...v0.3.2
 [0.3.1]: https://github.com/giantswarm/gatekeeper-app/compare/v0.3.0...v0.3.1
