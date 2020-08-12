@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- Lower validating webhook timeout from 5s to 3s, which was disrupting leader election [#43](https://github.com/giantswarm/gatekeeper-app/pull/43)
+
 ## [1.1.0] - 2020-08-07
 
 ### Added

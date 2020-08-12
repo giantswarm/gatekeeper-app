@@ -332,4 +332,4 @@ webhooks:
     resources:
     - '*'
   sideEffects: None
-  timeoutSeconds: 5
+  timeoutSeconds: 3
