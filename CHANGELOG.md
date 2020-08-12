@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.1] - 2020-08-12
+
 ### Fixed
 
 - Lower validating webhook timeout from 5s to 3s, which was disrupting leader election [#43](https://github.com/giantswarm/gatekeeper-app/pull/43)
@@ -95,7 +97,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Add helm charts.
 - Add script to sync upstream changes in the helm chart.
 
-[Unreleased]: https://github.com/giantswarm/gatekeeper-app/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/giantswarm/gatekeeper-app/compare/v1.1.1...HEAD
+[1.1.1]: https://github.com/giantswarm/gatekeeper-app/compare/v1.1.0...v1.1.1
 [1.1.0]: https://github.com/giantswarm/gatekeeper-app/compare/v1.0.0...v1.1.0
 [1.0.0]: https://github.com/giantswarm/gatekeeper-app/compare/v0.3.2...v1.0.0
 [0.3.2]: https://github.com/giantswarm/gatekeeper-app/compare/v0.3.1...v0.3.2
