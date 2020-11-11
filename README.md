@@ -1,6 +1,7 @@
 [![CircleCI](https://circleci.com/gh/giantswarm/gatekeeper-app.svg?style=shield&circle-token=7552290f91277c20801ee5bf7ff8c754a9f59d6d)](https://circleci.com/gh/giantswarm/gatekeeper-app)
 O
 
+
 # gatekeeper-app chart
 
 Giant Swarm offers a Gatekeeper Managed App which can be installed in tenant clusters.
