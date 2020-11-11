@@ -1,0 +1,54 @@
+commit 39418d8e5d08dd208cd91dd88d7787548d1c0434
+Author: mig4 <42650719@auril.club>
+Date:   Thu Jul 16 00:04:18 2020 +0100
+
+    Add Prometheus labels/annotations to GK service
+    
+    This should allow the service be picked up by the workload scrape job
+    and by `ServiceMonitor` in the new _Prometheus_ setup.
+
+diff --git a/helm/gatekeeper-app/templates/_helpers.tpl b/helm/gatekeeper-app/templates/_helpers.tpl
+index b9fa1e1..7edcaef 100644
+--- a/helm/gatekeeper-app/templates/_helpers.tpl
++++ b/helm/gatekeeper-app/templates/_helpers.tpl
+@@ -33,3 +33,24 @@ Selector labels
+ app.kubernetes.io/name: {{ include "gatekeeper-operator.name" . | quote }}
+ app.kubernetes.io/instance: {{ .Release.Name | quote }}
+ {{- end -}}
++
++{{/*
++Monitoring selector labels
++
++These enable the service to be monitored by the new Giant Swarm Prometheus
++when applied to a service.
++*/}}
++{{- define "monitoringLabels" -}}
++giantswarm.io/monitoring: "true"
++{{- end -}}
++
++{{/*
++Monitoring configuration annotations
++
++These enable and configure monitoring of the app when applied to a service.
++*/}}
++{{- define "monitoringConfigurationAnnotations" -}}
++prometheus.io/scrape: "true"
++prometheus.io/port: "8888"
++giantswarm.io/monitoring-port: "8888"
++{{- end -}}
+diff --git a/helm/gatekeeper-app/templates/gatekeeper.yaml b/helm/gatekeeper-app/templates/gatekeeper.yaml
+index 346ec56..c3386e1 100644
+--- a/helm/gatekeeper-app/templates/gatekeeper.yaml
++++ b/helm/gatekeeper-app/templates/gatekeeper.yaml
+@@ -187,8 +187,11 @@ metadata:
+ apiVersion: v1
+ kind: Service
+ metadata:
++  annotations:
++    {{- include "monitoringConfigurationAnnotations" . | nindent 4 }}
+   labels:
+     {{- include "gatekeeper-operator.labels" . | nindent 4 }}
++    {{- include "monitoringLabels" . | nindent 4 }}
+     gatekeeper.sh/system: "yes"
+   name: gatekeeper-webhook-service
+   namespace: gatekeeper-system

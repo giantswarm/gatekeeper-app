@@ -33,3 +33,24 @@ Selector labels
 app.kubernetes.io/name: {{ include "gatekeeper-operator.name" . | quote }}
 app.kubernetes.io/instance: {{ .Release.Name | quote }}
 {{- end -}}
+
+{{/*
+Monitoring selector labels
+
+These enable the service to be monitored by the new Giant Swarm Prometheus
+when applied to a service.
+*/}}
+{{- define "monitoringLabels" -}}
+giantswarm.io/monitoring: "true"
+{{- end -}}
+
+{{/*
+Monitoring configuration annotations
+
+These enable and configure monitoring of the app when applied to a service.
+*/}}
+{{- define "monitoringConfigurationAnnotations" -}}
+prometheus.io/scrape: "true"
+prometheus.io/port: "8888"
+giantswarm.io/monitoring-port: "8888"
+{{- end -}}

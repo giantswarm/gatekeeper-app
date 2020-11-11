@@ -187,8 +187,11 @@ metadata:
 apiVersion: v1
 kind: Service
 metadata:
+  annotations:
+    {{- include "monitoringConfigurationAnnotations" . | nindent 4 }}
   labels:
     {{- include "gatekeeper-operator.labels" . | nindent 4 }}
+    {{- include "monitoringLabels" . | nindent 4 }}
     gatekeeper.sh/system: "yes"
   name: gatekeeper-webhook-service
   namespace: gatekeeper-system
@@ -329,24 +332,4 @@ webhooks:
     resources:
     - '*'
   sideEffects: None
-  timeoutSeconds: 5
-- clientConfig:
-    caBundle: Cg==
-    service:
-      name: gatekeeper-webhook-service
-      namespace: gatekeeper-system
-      path: /v1/admitlabel
-  failurePolicy: Fail
-  name: check-ignore-label.gatekeeper.sh
-  rules:
-  - apiGroups:
-    - ""
-    apiVersions:
-    - '*'
-    operations:
-    - CREATE
-    - UPDATE
-    resources:
-    - namespaces
-  sideEffects: None
-  timeoutSeconds: 5
+  timeoutSeconds: 3
