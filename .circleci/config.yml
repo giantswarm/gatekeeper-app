@@ -50,3 +50,15 @@ workflows:
               ignore: /.*/
             tags:
               only: /^v.*/
+              
+      - architect/push-to-app-collection:
+          name: push-gatekeeper-app-to-vmware-app-collection
+          app_name: "gatekeeper-app"
+          app_collection_repo: "vmware-app-collection"
+          requires:
+            - push-gatekeeper-app-to-control-plane-app-catalog
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /^v.*/
