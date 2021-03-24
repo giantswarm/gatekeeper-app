@@ -1,6 +1,6 @@
 version: 2.1
 orbs:
-  architect: giantswarm/architect@2.2.0
+  architect: giantswarm/architect@2.4.1
 
 workflows:
   build-and-push:
@@ -12,6 +12,18 @@ workflows:
           chart: "gatekeeper-app"
           filters:
             # Trigger job on git tag.
+            tags:
+              only: /^v.*/
+
+      - architect/push-to-app-collection:
+          name: push-gatekeeper-app-to-shared-app-collection
+          app_name: "gatekeeper-app"
+          app_collection_repo: "shared-app-collection"
+          requires:
+            - push-gatekeeper-app-to-control-plane-app-catalog
+          filters:
+            branches:
+              ignore: /.*/
             tags:
               only: /^v.*/
 
